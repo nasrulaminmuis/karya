@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email             String   @unique @db.VarChar(255)
+  passwordHash      String   @map("password_hash")
+  username          String   @unique @db.VarChar(100)
+  fullName          String?  @map("full_name") @db.VarChar(255)
+  bio               String?
+  profilePictureUrl String?  @map("profile_picture_url") @db.VarChar(500)
+  customUrlSlug     String?  @unique @map("custom_url_slug") @db.VarChar(100)
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  portfolioSettings PortfolioSettings?
+  socialLinks       SocialLink[]
+  projects          Project[]
+  skills            UserSkill[]
+  certificates      CertificationAward[]
+  portfolioVisits   PortfolioVisit[]
+
+  @@map("users")
+}
+
+model PortfolioSettings {
+  userId         String @id @map("user_id") @db.Uuid
+  themeName      String @default("default") @map("theme_name") @db.VarChar(50)
+  layoutType     String @default("grid") @map("layout_type") @db.VarChar(50)
+  primaryColor   String @default("#007bff") @map("primary_color") @db.VarChar(20)
+  secondaryColor String @default("#6c757d") @map("secondary_color") @db.VarChar(20)
+  fontFamily     String @default("Arial, sans-serif") @map("font_family") @db.VarChar(100)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("portfolio_settings")
+}
+
+model SocialLink {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId   String @map("user_id") @db.Uuid
+  platform String @db.VarChar(50)
+  url      String @db.VarChar(500)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("social_links")
+}
+
+model Project {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  title         String   @db.VarChar(255)
+  description   String
+  imageUrl      String?  @map("image_url") @db.VarChar(500)
+  projectUrl    String?  @map("project_url") @db.VarChar(500)
+  repositoryUrl String?  @map("repository_url") @db.VarChar(500)
+  tags          String[] @default([])
+  isPublished   Boolean  @default(true) @map("is_published")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impressions ProjectImpression[]
+  interactions ProjectInteraction[]
+
+  @@map("projects")
+}
+
+model UserSkill {
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String @map("user_id") @db.Uuid
+  name             String @db.VarChar(100)
+  proficiencyLevel String @map("proficiency_level") @db.VarChar(50)
+  category         String @default("Other") @db.VarChar(50)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_skills")
+}
+
+model CertificationAward {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  title         String   @db.VarChar(255)
+  issuer        String   @db.VarChar(255)
+  issueDate     DateTime @map("issue_date") @db.Date
+  credentialUrl String?  @map("credential_url") @db.VarChar(500)
+  description   String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("certifications_awards")
+}
+
+model PortfolioVisit {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  visitorIp String?  @map("visitor_ip") @db.Inet
+  userAgent String?  @map("user_agent")
+  referrer  String?  @db.VarChar(500)
+  visitedAt DateTime @default(now()) @map("visited_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("portfolio_visits")
+}
+
+model ProjectImpression {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  visitorIp   String?  @map("visitor_ip") @db.Inet
+  userAgent   String?  @map("user_agent")
+  impressedAt DateTime @default(now()) @map("impressed_at") @db.Timestamptz
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_impressions")
+}
+
+model ProjectInteraction {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId       String   @map("project_id") @db.Uuid
+  interactionType String   @map("interaction_type") @db.VarChar(50)
+  visitorIp       String?  @map("visitor_ip") @db.Inet
+  userAgent       String?  @map("user_agent")
+  interactedAt    DateTime @default(now()) @map("interacted_at") @db.Timestamptz
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_interactions")
+}
