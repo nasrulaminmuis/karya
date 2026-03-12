@@ -10,9 +10,9 @@ export async function GET(request: NextRequest) {
     where: { userId: user.id },
   });
 
-  const githubLink = socialLinks.find((l) => l.platform === "github");
-  const linkedinLink = socialLinks.find((l) => l.platform === "linkedin");
-  const websiteLink = socialLinks.find((l) => l.platform === "website");
+  const githubLink = socialLinks.find((l: any) => l.platform === "github");
+  const linkedinLink = socialLinks.find((l: any) => l.platform === "linkedin");
+  const websiteLink = socialLinks.find((l: any) => l.platform === "website");
 
   return Response.json({
     id: user.id,
