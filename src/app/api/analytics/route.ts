@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  const projectStats = projects.map((p) => ({
+  const projectStats = projects.map((p: any) => ({
     id: p.id,
     title: p.title,
     views: p._count.impressions,
