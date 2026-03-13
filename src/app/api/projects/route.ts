@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
   });
 
   return Response.json(
-    projects.map((p) => ({
+    projects.map((p: any) => ({
       id: p.id,
       title: p.title,
       description: p.description,

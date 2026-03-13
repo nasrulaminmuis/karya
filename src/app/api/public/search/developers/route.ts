@@ -26,8 +26,8 @@ export async function GET(request: NextRequest) {
   });
 
   return Response.json(
-    users.map((u) => {
-      const githubLink = u.socialLinks.find((l) => l.platform === "github");
+    users.map((u: any) => {
+      const githubLink = u.socialLinks.find((l: any) => l.platform === "github");
       return {
         id: u.id,
         name: u.fullName,

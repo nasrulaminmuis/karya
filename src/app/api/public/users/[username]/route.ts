@@ -32,9 +32,9 @@ export async function GET(
     },
   }).catch(() => {}); // Don't fail if analytics insert fails
 
-  const githubLink = user.socialLinks.find((l) => l.platform === "github");
-  const linkedinLink = user.socialLinks.find((l) => l.platform === "linkedin");
-  const websiteLink = user.socialLinks.find((l) => l.platform === "website");
+  const githubLink = user.socialLinks.find((l: any) => l.platform === "github");
+  const linkedinLink = user.socialLinks.find((l: any) => l.platform === "linkedin");
+  const websiteLink = user.socialLinks.find((l: any) => l.platform === "website");
 
   return Response.json({
     user: {
@@ -50,13 +50,13 @@ export async function GET(
       websiteUrl: websiteLink?.url,
       createdAt: user.createdAt,
     },
-    skills: user.skills.map((s) => ({
+    skills: user.skills.map((s: any) => ({
       id: s.id,
       name: s.name,
       level: s.proficiencyLevel,
       category: s.category,
     })),
-    certificates: user.certificates.map((c) => ({
+    certificates: user.certificates.map((c: any) => ({
       id: c.id,
       name: c.title,
       issuer: c.issuer,
