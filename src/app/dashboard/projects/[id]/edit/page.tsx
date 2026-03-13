@@ -45,8 +45,8 @@ export default function EditProjectPage() {
           imageUrl: project.imageUrl || "",
         });
         setTags(project.tags);
-      } catch (err: any) {
-        setError(err.message || "Proyek tidak ditemukan");
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Proyek tidak ditemukan");
       } finally {
         setLoading(false);
       }
@@ -79,8 +79,8 @@ export default function EditProjectPage() {
         tags,
       });
       router.push("/dashboard/projects");
-    } catch (err: any) {
-      setError(err.message || "Gagal memperbarui proyek");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Gagal memperbarui proyek");
       setSaving(false);
     }
   };

@@ -38,9 +38,9 @@ export async function POST(request: NextRequest) {
 
     const token = signToken({ userId: user.id, email: user.email });
 
-    const githubLink = user.socialLinks.find((l: any) => l.platform === "github");
-    const linkedinLink = user.socialLinks.find((l: any) => l.platform === "linkedin");
-    const websiteLink = user.socialLinks.find((l: any) => l.platform === "website");
+    const githubLink = user.socialLinks.find((l) => l.platform === "github");
+    const linkedinLink = user.socialLinks.find((l) => l.platform === "linkedin");
+    const websiteLink = user.socialLinks.find((l) => l.platform === "website");
 
     return Response.json({
       token,

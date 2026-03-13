@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { mockDevelopers, mockProjects } from "@/lib/mock-data";
+import { mockDevelopers } from "@/lib/mock-data";
 import {
   ArrowRight,
   Code2,
@@ -127,7 +127,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <Card
                 key={feature.title}
                 hover

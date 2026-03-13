@@ -1,5 +1,5 @@
 // Mock window for Node.js environment (getToken checks typeof window)
-// @ts-ignore
+// @ts-expect-error - assigning window in Node.js test environment
 global.window = global;
 
 // Mock localStorage
