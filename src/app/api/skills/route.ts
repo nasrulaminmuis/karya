@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   });
 
   return Response.json(
-    skills.map((s) => ({
+    skills.map((s: any) => ({
       id: s.id,
       name: s.name,
       level: s.proficiencyLevel,
