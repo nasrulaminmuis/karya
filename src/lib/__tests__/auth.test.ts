@@ -12,7 +12,7 @@ jest.mock("@/lib/prisma", () => ({
 
 import { signToken, verifyToken, hashPassword, comparePassword, getAuthUser, unauthorizedResponse } from "@/lib/auth";
 
-const JWT_SECRET = "karya-dev-secret-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET || "karya-dev-secret-change-in-production";
 
 describe("auth.ts", () => {
   beforeEach(() => {
