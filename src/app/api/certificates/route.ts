@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   });
 
   return Response.json(
-    certificates.map((c) => ({
+    certificates.map((c: any) => ({
       id: c.id,
       name: c.title,
       issuer: c.issuer,
