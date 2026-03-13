@@ -1,7 +1,4 @@
 import type { Config } from "jest";
-import nextJest from "next/jest.js";
-
-const createJestConfig = nextJest({ dir: "./" });
 
 const config: Config = {
   projects: [
@@ -13,11 +10,18 @@ const config: Config = {
         "<rootDir>/src/lib/__tests__/**/*.test.ts",
         "<rootDir>/src/app/api/**/__tests__/**/*.test.ts",
       ],
+      // Force a predictable JWT_SECRET for tests — auth.test.ts uses this value.
+      // Real secrets from the environment must NOT bleed into unit tests.
+      globals: {
+        "process.env": {
+          JWT_SECRET: "karya-dev-secret-change-in-production",
+        },
+      },
       moduleNameMapper: {
         "^@/(.*)$": "<rootDir>/src/$1",
       },
       transform: {
-        "^.+\\.tsx?$": [
+        "^.+\.tsx?$": [
           "ts-jest",
           { tsconfig: "tsconfig.jest.json" },
         ],
